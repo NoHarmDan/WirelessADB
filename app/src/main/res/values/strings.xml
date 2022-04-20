@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Wireless ADB</string>
+    <string name="title_wireless_debugging">Wireless Debugging</string>
+</resources>
