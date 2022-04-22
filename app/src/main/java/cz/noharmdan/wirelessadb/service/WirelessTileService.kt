@@ -17,6 +17,7 @@ class WirelessTileService : TileService() {
     override fun onStartListening() {
         super.onStartListening()
 
+        GlobalSettingsRepository.update()
         uiScope.launch {
             GlobalSettingsRepository.wirelessDebugState.collect {
                 updateTileState(it)

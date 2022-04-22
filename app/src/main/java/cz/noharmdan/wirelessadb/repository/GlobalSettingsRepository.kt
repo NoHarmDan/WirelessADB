@@ -1,15 +1,12 @@
 package cz.noharmdan.wirelessadb.repository
 
-import android.annotation.SuppressLint
 import android.content.ContentResolver
 import android.content.Context
 import android.provider.Settings
 import android.util.Log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.lang.Exception
 
-@SuppressLint("StaticFieldLeak")
 object GlobalSettingsRepository {
 
     private const val ADB_WIFI_ENABLED = "adb_wifi_enabled"
@@ -21,7 +18,6 @@ object GlobalSettingsRepository {
     }
 
     private val ioScope = CoroutineScope(Dispatchers.IO + SupervisorJob() + coroutineExceptionHandler)
-    private var context: Context? = null
     private var contentResolver: ContentResolver? = null
 
     var isWirelessDebugEnabled: Boolean
@@ -43,7 +39,12 @@ object GlobalSettingsRepository {
     }
 
     fun init(context: Context) {
-        this.context = context
         this.contentResolver = context.contentResolver
+    }
+
+    fun update() {
+        ioScope.launch {
+            wirelessDebugState.emit(isWirelessDebugEnabled)
+        }
     }
 }
