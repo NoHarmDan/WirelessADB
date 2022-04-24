@@ -1,9 +1,12 @@
 package cz.noharmdan.wirelessadb.service
 
+import android.content.pm.PackageManager
 import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import cz.noharmdan.wirelessadb.R
 import cz.noharmdan.wirelessadb.WADBApplication
 import cz.noharmdan.wirelessadb.repository.GlobalSettingsRepository
 import kotlinx.coroutines.*
@@ -33,9 +36,18 @@ class WirelessTileService : TileService() {
     override fun onClick() {
         super.onClick()
 
-        qsTile?.let {
-            GlobalSettingsRepository.isWirelessDebugEnabled = !GlobalSettingsRepository.isWirelessDebugEnabled
+        if (applicationContext.checkSelfPermission("android.permission.WRITE_SECURE_SETTINGS") != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(
+                applicationContext,
+                R.string.write_secure_settings_permission_disabled_message,
+                Toast.LENGTH_LONG
+            )
+                .show()
+            return
         }
+
+        GlobalSettingsRepository.isWirelessDebugEnabled =
+            !GlobalSettingsRepository.isWirelessDebugEnabled
     }
 
     private fun updateTileState(isWirelessDebuggingOn: Boolean) {

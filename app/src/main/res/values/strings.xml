@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Wireless ADB</string>
     <string name="title_wireless_debugging">Wireless Debugging</string>
+    <string name="write_secure_settings_permission_disabled_message">WRITE_SECURE_SETTINGS permission not enabled</string>
 </resources>
